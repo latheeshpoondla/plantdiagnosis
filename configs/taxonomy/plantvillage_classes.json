@@ -1,0 +1,230 @@
+{
+  "Apple___Apple_scab": {
+    "crop": "apple",
+    "disease": "apple_scab",
+    "is_healthy": false,
+    "joint_key": "apple__apple_scab"
+  },
+  "Apple___Black_rot": {
+    "crop": "apple",
+    "disease": "apple_black_rot",
+    "is_healthy": false,
+    "joint_key": "apple__apple_black_rot"
+  },
+  "Apple___Cedar_apple_rust": {
+    "crop": "apple",
+    "disease": "cedar_apple_rust",
+    "is_healthy": false,
+    "joint_key": "apple__cedar_apple_rust"
+  },
+  "Apple___healthy": {
+    "crop": "apple",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "apple__healthy"
+  },
+  "Blueberry___healthy": {
+    "crop": "blueberry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "blueberry__healthy"
+  },
+  "Cherry_(including_sour)___Powdery_mildew": {
+    "crop": "cherry",
+    "disease": "powdery_mildew",
+    "is_healthy": false,
+    "joint_key": "cherry__powdery_mildew"
+  },
+  "Cherry_(including_sour)___healthy": {
+    "crop": "cherry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "cherry__healthy"
+  },
+  "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
+    "crop": "corn",
+    "disease": "gray_leaf_spot",
+    "is_healthy": false,
+    "joint_key": "corn__gray_leaf_spot"
+  },
+  "Corn_(maize)___Common_rust_": {
+    "crop": "corn",
+    "disease": "common_rust",
+    "is_healthy": false,
+    "joint_key": "corn__common_rust"
+  },
+  "Corn_(maize)___Northern_Leaf_Blight": {
+    "crop": "corn",
+    "disease": "northern_leaf_blight",
+    "is_healthy": false,
+    "joint_key": "corn__northern_leaf_blight"
+  },
+  "Corn_(maize)___healthy": {
+    "crop": "corn",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "corn__healthy"
+  },
+  "Grape___Black_rot": {
+    "crop": "grape",
+    "disease": "grape_black_rot",
+    "is_healthy": false,
+    "joint_key": "grape__grape_black_rot"
+  },
+  "Grape___Esca_(Black_Measles)": {
+    "crop": "grape",
+    "disease": "esca_black_measles",
+    "is_healthy": false,
+    "joint_key": "grape__esca_black_measles"
+  },
+  "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+    "crop": "grape",
+    "disease": "leaf_blight_isariopsis",
+    "is_healthy": false,
+    "joint_key": "grape__leaf_blight_isariopsis"
+  },
+  "Grape___healthy": {
+    "crop": "grape",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "grape__healthy"
+  },
+  "Orange___Haunglongbing_(Citrus_greening)": {
+    "crop": "orange",
+    "disease": "huanglongbing",
+    "is_healthy": false,
+    "joint_key": "orange__huanglongbing"
+  },
+  "Peach___Bacterial_spot": {
+    "crop": "peach",
+    "disease": "bacterial_spot",
+    "is_healthy": false,
+    "joint_key": "peach__bacterial_spot"
+  },
+  "Peach___healthy": {
+    "crop": "peach",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "peach__healthy"
+  },
+  "Pepper,_bell___Bacterial_spot": {
+    "crop": "pepper_bell",
+    "disease": "bacterial_spot",
+    "is_healthy": false,
+    "joint_key": "pepper_bell__bacterial_spot"
+  },
+  "Pepper,_bell___healthy": {
+    "crop": "pepper_bell",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "pepper_bell__healthy"
+  },
+  "Potato___Early_blight": {
+    "crop": "potato",
+    "disease": "early_blight",
+    "is_healthy": false,
+    "joint_key": "potato__early_blight"
+  },
+  "Potato___Late_blight": {
+    "crop": "potato",
+    "disease": "late_blight",
+    "is_healthy": false,
+    "joint_key": "potato__late_blight"
+  },
+  "Potato___healthy": {
+    "crop": "potato",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "potato__healthy"
+  },
+  "Raspberry___healthy": {
+    "crop": "raspberry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "raspberry__healthy"
+  },
+  "Soybean___healthy": {
+    "crop": "soybean",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "soybean__healthy"
+  },
+  "Squash___Powdery_mildew": {
+    "crop": "squash",
+    "disease": "powdery_mildew",
+    "is_healthy": false,
+    "joint_key": "squash__powdery_mildew"
+  },
+  "Strawberry___Leaf_scorch": {
+    "crop": "strawberry",
+    "disease": "leaf_scorch",
+    "is_healthy": false,
+    "joint_key": "strawberry__leaf_scorch"
+  },
+  "Strawberry___healthy": {
+    "crop": "strawberry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "strawberry__healthy"
+  },
+  "Tomato___Bacterial_spot": {
+    "crop": "tomato",
+    "disease": "bacterial_spot",
+    "is_healthy": false,
+    "joint_key": "tomato__bacterial_spot"
+  },
+  "Tomato___Early_blight": {
+    "crop": "tomato",
+    "disease": "early_blight",
+    "is_healthy": false,
+    "joint_key": "tomato__early_blight"
+  },
+  "Tomato___Late_blight": {
+    "crop": "tomato",
+    "disease": "late_blight",
+    "is_healthy": false,
+    "joint_key": "tomato__late_blight"
+  },
+  "Tomato___Leaf_Mold": {
+    "crop": "tomato",
+    "disease": "leaf_mold",
+    "is_healthy": false,
+    "joint_key": "tomato__leaf_mold"
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "crop": "tomato",
+    "disease": "septoria_leaf_spot",
+    "is_healthy": false,
+    "joint_key": "tomato__septoria_leaf_spot"
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+    "crop": "tomato",
+    "disease": "spider_mites",
+    "is_healthy": false,
+    "joint_key": "tomato__spider_mites"
+  },
+  "Tomato___Target_Spot": {
+    "crop": "tomato",
+    "disease": "target_spot",
+    "is_healthy": false,
+    "joint_key": "tomato__target_spot"
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+    "crop": "tomato",
+    "disease": "yellow_leaf_curl_virus",
+    "is_healthy": false,
+    "joint_key": "tomato__yellow_leaf_curl_virus"
+  },
+  "Tomato___Tomato_mosaic_virus": {
+    "crop": "tomato",
+    "disease": "mosaic_virus",
+    "is_healthy": false,
+    "joint_key": "tomato__mosaic_virus"
+  },
+  "Tomato___healthy": {
+    "crop": "tomato",
+    "disease": "healthy",
+    "is_healthy": true,
+    "joint_key": "tomato__healthy"
+  }
+}

@@ -1,6 +1,17 @@
 .vscode
 __pycache__
+*.pyc
+.ipynb_checkpoints
 
 PD.ipynb
+
+# Raw dataset downloads/clones (multi-GB; never committed -- Kaggle mounts these fresh every session)
 /data/
+
+# Pipeline output: regenerated every run by scripts/run_data_pipeline.py, and full of
+# Kaggle-session-specific absolute paths, so it doesn't belong in git. The small,
+# hand/one-time-computed metadata this depends on lives in /data_meta/ instead, which
+# IS tracked (see assets/docs/02_taxonomy_mapping.md).
+/data_manifests/
+
 /assets/

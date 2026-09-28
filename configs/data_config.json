@@ -1,0 +1,26 @@
+{
+  "seed": 42,
+  "image_extensions": [".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"],
+
+  "plantvillage": {
+    "split_source": "resolved_hf_leaf_grouped",
+    "_note": "Train/val/test come from data_meta/plantvillage/resolved_splits/color_{train,val,test}.csv, built once from the HuggingFace mohanty/PlantVillage leaf-grouped official split (see assets/docs/02_taxonomy_mapping.md). Test is the official HF test file, untouched. Val is 10% of the official train, carved by whole leaf-group so no leaf's photos cross train/val.",
+    "val_fraction_of_official_train": 0.10
+  },
+
+  "plantdoc": {
+    "split_source": "official_train_test_plus_carved_val",
+    "_note": "Official train/ and test/ folders from the dataset are used as-is; test is locked. Val is carved from the official train folder at pipeline run-time (no upstream leaf-grouping metadata exists for PlantDoc, so exact-file-hash de-duplication is used as the leakage guard instead).",
+    "val_fraction_of_official_train": 0.12,
+    "hash_dedupe": true
+  },
+
+  "stats": {
+    "image_size_sample_n": 300,
+    "channel_stats_sample_n": 500,
+    "run_corrupt_check": true,
+    "corrupt_check_sample_n": null
+  },
+
+  "_numbers_note": "This file holds every data-stage knob. Every count/measurement this pipeline produces at run time (per-class/per-split image counts, resolved image sizes, computed channel mean/std, corrupt files found, exact paths resolved) is written to data_manifests/dataset_stats.json and data_manifests/data_config_resolved.json by scripts/run_data_pipeline.py -- nothing is hand-typed or guessed there."
+}

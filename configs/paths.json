@@ -1,0 +1,23 @@
+{
+  "_comment": "Where the raw datasets live. The resolver in src/data/paths.py auto-discovers the real class-folder root under each of these bases by matching folder names against the taxonomy signature, so it does not matter if Kaggle nests an extra 'color/color' level or similar -- verified against the abdallahalidev/plantvillage-dataset and abdulhasibuddin/plant-doc-dataset Kaggle mirrors.",
+
+  "kaggle_input_dir": "/kaggle/input",
+
+  "kaggle_dataset_slugs": {
+    "plantvillage": "plantvillage-dataset",
+    "plantdoc": "plant-doc-dataset"
+  },
+
+  "local_search_roots": {
+    "_comment": "Extra bases searched in addition to kaggle_input_dir, so the exact same code also runs outside Kaggle (this repo's local data/ folder, a laptop, etc). Safe to leave pointing at paths that don't exist -- they are just skipped.",
+    "plantvillage": ["data/pvd/data/raw"],
+    "plantdoc": ["data/PlantDoc-Dataset", "data/plantdoc_src"]
+  },
+
+  "data_meta_dir": "data_meta",
+  "manifests_out_dir": "data_manifests",
+
+  "plantvillage_variants_to_use": ["color"],
+  "plantvillage_variants_available": ["color", "grayscale", "segmented"],
+  "_variants_note": "Only 'color' (true RGB photos) is used for this project. grayscale/segmented are pre-processed derivatives of the same underlying photos and are excluded to avoid leaking pre-segmented masks into an RGB pipeline."
+}

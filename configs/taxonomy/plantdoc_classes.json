@@ -1,0 +1,191 @@
+{
+  "Apple Scab Leaf": {
+    "crop": "apple",
+    "disease": "apple_scab",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "apple__apple_scab"
+  },
+  "Apple leaf": {
+    "crop": "apple",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "apple__healthy"
+  },
+  "Apple rust leaf": {
+    "crop": "apple",
+    "disease": "cedar_apple_rust",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "apple__cedar_apple_rust"
+  },
+  "Bell_pepper leaf": {
+    "crop": "pepper_bell",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "pepper_bell__healthy"
+  },
+  "Bell_pepper leaf spot": {
+    "crop": "pepper_bell",
+    "disease": "bacterial_spot",
+    "is_healthy": false,
+    "assumption": true,
+    "joint_key": "pepper_bell__bacterial_spot"
+  },
+  "Blueberry leaf": {
+    "crop": "blueberry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "blueberry__healthy"
+  },
+  "Cherry leaf": {
+    "crop": "cherry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "cherry__healthy"
+  },
+  "Corn Gray leaf spot": {
+    "crop": "corn",
+    "disease": "gray_leaf_spot",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "corn__gray_leaf_spot"
+  },
+  "Corn leaf blight": {
+    "crop": "corn",
+    "disease": "northern_leaf_blight",
+    "is_healthy": false,
+    "assumption": true,
+    "joint_key": "corn__northern_leaf_blight"
+  },
+  "Corn rust leaf": {
+    "crop": "corn",
+    "disease": "common_rust",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "corn__common_rust"
+  },
+  "Peach leaf": {
+    "crop": "peach",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "peach__healthy"
+  },
+  "Potato leaf early blight": {
+    "crop": "potato",
+    "disease": "early_blight",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "potato__early_blight"
+  },
+  "Potato leaf late blight": {
+    "crop": "potato",
+    "disease": "late_blight",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "potato__late_blight"
+  },
+  "Raspberry leaf": {
+    "crop": "raspberry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "raspberry__healthy"
+  },
+  "Soyabean leaf": {
+    "crop": "soybean",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "soybean__healthy"
+  },
+  "Squash Powdery mildew leaf": {
+    "crop": "squash",
+    "disease": "powdery_mildew",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "squash__powdery_mildew"
+  },
+  "Strawberry leaf": {
+    "crop": "strawberry",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "strawberry__healthy"
+  },
+  "Tomato Early blight leaf": {
+    "crop": "tomato",
+    "disease": "early_blight",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "tomato__early_blight"
+  },
+  "Tomato Septoria leaf spot": {
+    "crop": "tomato",
+    "disease": "septoria_leaf_spot",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "tomato__septoria_leaf_spot"
+  },
+  "Tomato leaf": {
+    "crop": "tomato",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "tomato__healthy"
+  },
+  "Tomato leaf bacterial spot": {
+    "crop": "tomato",
+    "disease": "bacterial_spot",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "tomato__bacterial_spot"
+  },
+  "Tomato leaf late blight": {
+    "crop": "tomato",
+    "disease": "late_blight",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "tomato__late_blight"
+  },
+  "Tomato leaf mosaic virus": {
+    "crop": "tomato",
+    "disease": "mosaic_virus",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "tomato__mosaic_virus"
+  },
+  "Tomato leaf yellow virus": {
+    "crop": "tomato",
+    "disease": "yellow_leaf_curl_virus",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "tomato__yellow_leaf_curl_virus"
+  },
+  "Tomato mold leaf": {
+    "crop": "tomato",
+    "disease": "leaf_mold",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "tomato__leaf_mold"
+  },
+  "grape leaf": {
+    "crop": "grape",
+    "disease": "healthy",
+    "is_healthy": true,
+    "assumption": false,
+    "joint_key": "grape__healthy"
+  },
+  "grape leaf black rot": {
+    "crop": "grape",
+    "disease": "grape_black_rot",
+    "is_healthy": false,
+    "assumption": false,
+    "joint_key": "grape__grape_black_rot"
+  }
+}

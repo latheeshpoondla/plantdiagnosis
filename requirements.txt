@@ -1,1 +1,16 @@
-hugging-face
+# --- Data stage (this phase) ---
+pandas>=2.0
+numpy>=1.24
+Pillow>=10.0
+tqdm>=4.66
+
+# --- Modelling stage (added when we start training; listed here so the file
+# stays the single source of truth, per project convention) ---
+torch>=2.1
+torchvision>=0.16
+# grad-cam           # add when we build the Grad-CAM evidence step
+# timm                # only if we source ConvNeXt-Tiny/Swin-Tiny weights via timm instead of torchvision
+
+# Kaggle notebooks ship pandas/numpy/Pillow/torch/torchvision preinstalled;
+# this file exists for reproducibility (e.g. `pip install -r requirements.txt`
+# on a fresh Kaggle session or elsewhere) rather than because Kaggle needs it.
