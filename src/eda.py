@@ -5,11 +5,13 @@ Reads the OUTPUT of scripts/run_data_pipeline.py (data_manifests/*.csv/*.json)
 
 Designed for one function call per Kaggle cell: each plot function loads
 nothing on its own, takes the already-loaded dataframes/stats as arguments,
-prints a short description of what it found, saves a PNG with a clear
-filename, and returns the saved path. Call `load_eda_inputs()` once at the
-top of the notebook, then call whichever plot functions you want, in any
-order, in their own cells. `run_full_eda()` runs all of them in sequence if
-you just want everything.
+prints a short description of what it found, displays the figure inline
+(via plt.show() -- works whether called one-per-cell or all at once through
+run_full_eda()), saves a PNG with a clear filename, and returns the saved
+path. Call `load_eda_inputs()` once at the top of the notebook, then call
+whichever plot functions you want, in any order, in their own cells.
+`run_full_eda()` runs all of them in sequence -- and shows every figure
+inline, one after another -- if you just want everything.
 
 Typical Kaggle usage
 ---------------------
@@ -109,8 +111,12 @@ def _savefig(fig, out_dir: str | Path, filename: str) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / filename
     fig.savefig(path)
-    plt.close(fig)
     print(f"Saved -> {path}")
+    # Display inline (Jupyter/Kaggle's inline backend renders + auto-closes on show()),
+    # then close explicitly too so a non-inline backend doesn't leak figures across the
+    # 15-19 plots run_full_eda() produces in one cell.
+    plt.show()
+    plt.close(fig)
     return path
 
 
