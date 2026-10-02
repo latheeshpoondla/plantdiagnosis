@@ -5,12 +5,13 @@ Pillow>=10.0
 tqdm>=4.66
 matplotlib>=3.7   # EDA plots (src/eda.py)
 
-# --- Modelling stage (added when we start training; listed here so the file
-# stays the single source of truth, per project convention) ---
+# --- Modelling stage (scripts/train.py, scripts/run_multi_seed.py) ---
+# ConvNeXt-Tiny and Swin-Tiny are both sourced from torchvision.models directly
+# (torchvision.models.convnext_tiny / swin_t with their IMAGENET1K_V1 weights) --
+# no timm dependency needed, confirmed working. See assets/docs/05_modelling_decisions.md.
 torch>=2.1
 torchvision>=0.16
-# grad-cam           # add when we build the Grad-CAM evidence step
-# timm                # only if we source ConvNeXt-Tiny/Swin-Tiny weights via timm instead of torchvision
+# grad-cam           # add when we build the Grad-CAM evidence step (not yet implemented)
 
 # Kaggle notebooks ship pandas/numpy/Pillow/torch/torchvision preinstalled;
 # this file exists for reproducibility (e.g. `pip install -r requirements.txt`

@@ -1,0 +1,45 @@
+{
+  "_comment": "Every modelling-stage knob, same convention as configs/data_config.json for the data stage. See assets/docs/05_modelling_decisions.md for why each default was picked.",
+
+  "backbones": {
+    "convnext_tiny": {"torchvision_fn": "convnext_tiny", "weights_enum": "ConvNeXt_Tiny_Weights", "image_size": 224, "feature_dim": 768},
+    "swin_tiny": {"torchvision_fn": "swin_t", "weights_enum": "Swin_T_Weights", "image_size": 224, "feature_dim": 768}
+  },
+
+  "regimes": {
+    "_comment": "regime -> which dataset's manifest/split trains+validates+tests, and whether a run is 'heavy' (PlantVillage-scale, 1 seed) or 'light' (PlantDoc-scale, 3 seeds). Regime 3 reuses regime 2's dataset -- the only difference is pretrained_source.",
+    "1": {"dataset": "plantvillage", "weight": "heavy", "default_pretrained_source": "imagenet"},
+    "2": {"dataset": "plantdoc", "weight": "light", "default_pretrained_source": "imagenet"},
+    "3": {"dataset": "plantdoc", "weight": "light", "default_pretrained_source": "pvd_regime1"}
+  },
+
+  "seeds": {
+    "_comment": "finding #2 in 04_eda_modelling_implications.md -- PlantDoc test median 9 images/class means single-run light-regime numbers aren't trustworthy; heavy regime-1 runs don't have that problem.",
+    "heavy": [42],
+    "light": [42, 43, 44]
+  },
+
+  "defaults": {
+    "label_mode": "multitask",
+    "epochs_heavy": 15,
+    "epochs_light": 25,
+    "batch_size": 64,
+    "optimizer": "adamw",
+    "lr": 1e-4,
+    "weight_decay": 0.05,
+    "lr_schedule": "cosine",
+    "warmup_epochs": 1,
+    "class_weight_mode": "inv_freq",
+    "norm_stats": "auto",
+    "pretrained_source": "auto",
+    "val_metric": "mean_acc",
+    "patience": 6,
+    "num_workers": 4,
+    "amp": true,
+    "loss_weight_crop": 1.0,
+    "loss_weight_disease": 1.0,
+    "dropout": 0.2
+  },
+
+  "_numbers_note": "As with the data stage, every number an actual run used (resolved epochs/lr/seed/class-weights/dataset paths, not just these defaults) is written to each experiment's config.json by scripts/train.py -- this file is only the starting point, never read directly by anything downstream of training."
+}

@@ -17,4 +17,13 @@ PD.ipynb
 # EDA plot output: regenerated every run by src/eda.py, same reasoning as /data_manifests/.
 /eda_outputs/
 
-/assets/
+# Training run outputs: checkpoints, per-epoch train/val loss logs, test metrics --
+# regenerated every run by scripts/train.py / scripts/run_multi_seed.py, and checkpoints
+# alone would blow up repo size. The decisions behind what gets trained live in
+# assets/docs/05_modelling_decisions.md / 06_training_guide.md instead, which ARE tracked.
+/runs/
+
+# NOTE: assets/docs/*.md (this project's running decision log) is intentionally tracked --
+# do not add /assets/ back here. A prior version of this file ignored the whole /assets/
+# folder, which silently excluded every doc in assets/docs/ from version control; that was
+# a mistake and has been removed.
