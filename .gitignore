@@ -4,7 +4,7 @@ __pycache__
 .ipynb_checkpoints
 
 PD.ipynb
-
+/assests/
 # Raw dataset downloads/clones (multi-GB; never committed -- Kaggle mounts these fresh every session)
 /data/
 
