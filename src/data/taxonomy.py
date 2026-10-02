@@ -62,6 +62,59 @@ class Taxonomy:
     def num_joint(self) -> int:
         return len(self.joint_to_id)
 
+    def crop_healthy_diseased_coverage(self) -> dict:
+        """For every crop, whether a healthy class and/or any diseased
+        class(es) exist in each dataset's raw taxonomy. This is a property
+        of the LABEL DEFINITIONS (configs/taxonomy/*.json), independent of
+        which images actually got scanned -- e.g. it will say PlantDoc has
+        no healthy corn class even before any image is ever loaded, because
+        no such raw folder exists in the dataset's design.
+
+        Answers "does this crop have both a healthy and a diseased class in
+        each dataset, or is it healthy-only / diseased-only / absent?" --
+        see assets/docs/02_taxonomy_mapping.md section 6 for the full table
+        and what it means for each experiment regime.
+        """
+        def per_dataset(raw_map: dict) -> dict:
+            cov: dict[str, dict] = {}
+            for meta in raw_map.values():
+                c = meta["crop"]
+                entry = cov.setdefault(c, {"healthy": False, "diseases": set()})
+                if meta["is_healthy"]:
+                    entry["healthy"] = True
+                else:
+                    entry["diseases"].add(meta["disease"])
+            return cov
+
+        pvd_cov = per_dataset(self.pvd_map)
+        pd_cov = per_dataset(self.pd_map)
+        all_crops = sorted(set(pvd_cov) | set(pd_cov))
+
+        report = {}
+        for c in all_crops:
+            pv = pvd_cov.get(c, {"healthy": False, "diseases": set()})
+            pdc = pd_cov.get(c, {"healthy": False, "diseases": set()})
+            flags = []
+            if c not in pd_cov:
+                flags.append("absent_from_plantdoc")
+            else:
+                if pv["healthy"] and not pdc["healthy"]:
+                    flags.append("no_healthy_example_in_plantdoc")
+                if pv["diseases"] and not pdc["diseases"]:
+                    flags.append("no_diseased_example_in_plantdoc")
+            if not pv["healthy"]:
+                flags.append("no_healthy_class_in_plantvillage")
+            if not pv["diseases"]:
+                flags.append("no_diseased_class_in_plantvillage")
+            report[c] = {
+                "plantvillage_healthy": pv["healthy"],
+                "plantvillage_n_diseases": len(pv["diseases"]),
+                "plantdoc_healthy": pdc["healthy"],
+                "plantdoc_n_diseases": len(pdc["diseases"]),
+                "flags": flags,
+            }
+        return report
+
 
 def load_taxonomy(configs_dir: str | Path = "configs") -> Taxonomy:
     tdir = Path(configs_dir) / "taxonomy"

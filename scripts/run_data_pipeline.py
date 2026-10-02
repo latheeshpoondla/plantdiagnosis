@@ -31,7 +31,7 @@ from src.data.paths import (
 from src.data.taxonomy import load_taxonomy, save_label_encoders
 from src.data.scan import scan_plantvillage, scan_plantdoc
 from src.data.split import attach_plantvillage_split, make_plantdoc_split
-from src.data.stats import class_counts, image_size_sample, corrupt_check, channel_mean_std
+from src.data.stats import class_counts, zero_support_classes, image_size_sample, corrupt_check, channel_mean_std
 from src.utils.io_utils import read_json, write_json, ensure_dir
 from src.utils.seed_utils import set_global_seed
 from src.utils.logging_utils import RunLogger
@@ -111,17 +111,42 @@ def main():
     logger.log("manifests_written", plantvillage=str(pv_manifest_path), plantdoc=str(pd_manifest_path))
 
     # ---------------- stats ----------------
+    # class_counts is zero-filled against the FULL canonical label space (not just
+    # whatever classes happen to appear) so a class with no examples in a split is an
+    # explicit 0, never a silently-missing key. See assets/docs/02_taxonomy_mapping.md
+    # section 6 -- e.g. PlantDoc has zero healthy-corn and zero diseased-cherry images,
+    # by dataset design, not by accident.
+    all_crops = sorted(taxonomy.crop_to_id)
+    all_diseases = sorted(taxonomy.disease_to_id)
+    all_joint = sorted(taxonomy.joint_to_id)
+
     stats_cfg = data_cfg["stats"]
     stats = {
         "plantvillage": {
-            "class_counts": class_counts(pv_df),
+            "class_counts_joint": class_counts(pv_df, "joint_key", all_joint),
+            "class_counts_crop": class_counts(pv_df, "crop", all_crops),
+            "class_counts_disease": class_counts(pv_df, "disease", all_diseases),
             "image_size_sample": image_size_sample(pv_df, n=stats_cfg["image_size_sample_n"], seed=data_cfg["seed"]),
         },
         "plantdoc": {
-            "class_counts": class_counts(pd_df),
+            "class_counts_joint": class_counts(pd_df, "joint_key", all_joint),
+            "class_counts_crop": class_counts(pd_df, "crop", all_crops),
+            "class_counts_disease": class_counts(pd_df, "disease", all_diseases),
             "image_size_sample": image_size_sample(pd_df, n=stats_cfg["image_size_sample_n"], seed=data_cfg["seed"]),
         },
+        "taxonomy_crop_healthy_diseased_coverage": taxonomy.crop_healthy_diseased_coverage(),
     }
+    for ds in ("plantvillage", "plantdoc"):
+        stats[ds]["zero_support_joint_classes"] = zero_support_classes(stats[ds]["class_counts_joint"])
+        stats[ds]["zero_support_crop_classes"] = zero_support_classes(stats[ds]["class_counts_crop"])
+        stats[ds]["zero_support_disease_classes"] = zero_support_classes(stats[ds]["class_counts_disease"])
+    logger.log(
+        "zero_support_summary",
+        plantvillage_val_zero_joint=len(stats["plantvillage"]["zero_support_joint_classes"].get("val", [])),
+        plantvillage_test_zero_joint=len(stats["plantvillage"]["zero_support_joint_classes"].get("test", [])),
+        plantdoc_train_zero_joint=len(stats["plantdoc"]["zero_support_joint_classes"].get("train", [])),
+        plantdoc_test_zero_joint=len(stats["plantdoc"]["zero_support_joint_classes"].get("test", [])),
+    )
     if not args.skip_corrupt_check and stats_cfg["run_corrupt_check"]:
         stats["plantvillage"]["corrupt_files"] = corrupt_check(pv_df, sample_n=stats_cfg["corrupt_check_sample_n"])
         stats["plantdoc"]["corrupt_files"] = corrupt_check(pd_df, sample_n=stats_cfg["corrupt_check_sample_n"])

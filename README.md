@@ -37,6 +37,27 @@ model is guaranteed about these files) and `assets/docs/01_data_analysis.md`
 / `02_taxonomy_mapping.md` for how the datasets and label taxonomy were
 analysed.
 
+## EDA
+
+Once `data_manifests/` exists, `src/eda.py` generates every plot used to
+sanity-check the data -- split balance, class counts/imbalance, crop and
+disease coverage, healthy/diseased ratios, image size/channel/file-size
+distributions, and real sample-image grids (including a PlantVillage-vs-
+PlantDoc domain-gap comparison on matched classes). It's one function per
+plot, each loading nothing on its own and printing a short finding before
+saving a numbered PNG to `eda_outputs/` -- written for one call per Kaggle
+cell:
+
+```python
+from src.eda import *
+pv_df, pd_df, stats, taxonomy, label_encoders, resolved_cfg = load_eda_inputs()
+
+plot_dataset_split_overview(pv_df, pd_df)
+plot_joint_class_counts(pv_df, "plantvillage", taxonomy)
+# ...or just:
+run_full_eda()   # every plot, in order, in one call
+```
+
 ## Layout
 
 ```
@@ -46,8 +67,10 @@ data_meta/           small, versioned, hand-verified metadata (tracked in git) -
 src/data/             the data pipeline: paths.py (dataset auto-discovery), taxonomy.py,
                       scan.py, split.py, dataset.py (torch Dataset), transforms.py, stats.py
 src/utils/            io/seed/logging helpers shared by the data stage and (later) training
+src/eda.py             EDA plot functions, one per plot -- reads data_manifests/, writes eda_outputs/
 scripts/               run_data_pipeline.py (the entrypoint), make_synthetic_fixture.py (dev/test only)
 data_manifests/       OUTPUT of the pipeline -- gitignored, regenerated every session
+eda_outputs/           OUTPUT of src/eda.py -- gitignored, regenerated every session
 data/                 raw dataset downloads/clones -- gitignored, never committed
 assets/docs/           the running written record of this project's data/modelling decisions
 ```

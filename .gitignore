@@ -14,4 +14,7 @@ PD.ipynb
 # IS tracked (see assets/docs/02_taxonomy_mapping.md).
 /data_manifests/
 
+# EDA plot output: regenerated every run by src/eda.py, same reasoning as /data_manifests/.
+/eda_outputs/
+
 /assets/

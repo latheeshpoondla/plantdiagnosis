@@ -3,6 +3,7 @@ pandas>=2.0
 numpy>=1.24
 Pillow>=10.0
 tqdm>=4.66
+matplotlib>=3.7   # EDA plots (src/eda.py)
 
 # --- Modelling stage (added when we start training; listed here so the file
 # stays the single source of truth, per project convention) ---

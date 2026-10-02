@@ -10,11 +10,31 @@ import pandas as pd
 from PIL import Image, UnidentifiedImageError
 
 
-def class_counts(df: pd.DataFrame, class_col: str = "joint_key") -> dict:
+def class_counts(df: pd.DataFrame, class_col: str = "joint_key", all_classes: list[str] | None = None) -> dict:
+    """Per-split counts. If `all_classes` is given (the full canonical list
+    for this label space, e.g. taxonomy.joint_to_id.keys()), every class is
+    given an explicit entry -- including 0 -- for every split. Without it,
+    a class with zero examples in a split simply never appears as a key,
+    which silently hides real "this class has no training/test data here"
+    gaps (see assets/docs/02_taxonomy_mapping.md section 6 -- e.g.
+    PlantDoc has zero healthy-corn and zero diseased-cherry examples)."""
     out = {}
     for split, sdf in df.groupby("split"):
-        out[split] = sdf[class_col].value_counts().sort_index().to_dict()
+        counts = sdf[class_col].value_counts().to_dict()
+        if all_classes is not None:
+            counts = {c: counts.get(c, 0) for c in all_classes}
+        out[split] = dict(sorted(counts.items()))
     return out
+
+
+def zero_support_classes(counts_by_split: dict) -> dict:
+    """Given class_counts(..., all_classes=...) output, returns the classes
+    with 0 examples per split -- the explicit list a model report should
+    call out before quoting per-class metrics for that split."""
+    return {
+        split: sorted(c for c, n in counts.items() if n == 0)
+        for split, counts in counts_by_split.items()
+    }
 
 
 def image_size_sample(df: pd.DataFrame, n: int = 300, seed: int = 42) -> dict:
