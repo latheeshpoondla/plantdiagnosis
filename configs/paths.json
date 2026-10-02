@@ -4,8 +4,8 @@
   "kaggle_input_dir": "/kaggle/input",
 
   "kaggle_dataset_slugs": {
-    "plantvillage": "abdallahalidev/plantvillage-dataset",
-    "plantdoc": "abdulhasibuddin/plant-doc-dataset"
+    "plantvillage": "datasets/abdallahalidev/plantvillage-dataset",
+    "plantdoc": "datasets/abdulhasibuddin/plant-doc-dataset"
   },
 
   "local_search_roots": {
