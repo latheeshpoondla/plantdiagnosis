@@ -41,7 +41,13 @@ class PlantLeafDataset(_TorchDataset):
                 "in this environment). This is expected outside Kaggle."
             )
         df = manifest if isinstance(manifest, pd.DataFrame) else pd.read_csv(manifest)
-        self.df = df.loc[df["split"] == split].reset_index(drop=True)
+        # "all" -- every row regardless of split -- exists for cross-dataset
+        # zero-shot eval (e.g. regime 1's PlantDoc eval in scripts/train.py):
+        # when a dataset was never trained/validated on, its train/val splits
+        # aren't held out from anything and are fair to evaluate on too, and
+        # using all of them maximizes N for a dataset as thin per-class as
+        # PlantDoc (see assets/docs/05_modelling_decisions.md).
+        self.df = df.reset_index(drop=True) if split == "all" else df.loc[df["split"] == split].reset_index(drop=True)
         if len(self.df) == 0:
             raise ValueError(f"No rows found for split={split!r} in the given manifest.")
         self.label_mode = label_mode

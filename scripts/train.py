@@ -20,10 +20,14 @@ flags on the SAME command used to train it.
     # regime 3 (auto-loads this backbone's regime-1 checkpoint), one of 3 seeds
     python scripts/train.py --backbone convnext_tiny --regime 3 --seed 42
 
-    # zero-shot: evaluate a trained regime-1 model directly on PlantDoc test,
-    # no fine-tuning -- the "free" eval from the 2026-09-19 staged plan
+    # zero-shot: evaluate a trained regime-1 model directly on PlantDoc, no
+    # fine-tuning -- the "free" eval from the 2026-09-19 staged plan. For
+    # regime 1 specifically, --eval_split defaults to "all" (PlantDoc's
+    # complete train+val+test, not just its test split) since regime 1
+    # never trained/validated on any of it -- pass --eval_split explicitly
+    # to look at just one split instead.
     python scripts/train.py --backbone convnext_tiny --regime 1 --seed 42 \\
-        --mode test --eval_dataset plantdoc --eval_split test
+        --mode test --eval_dataset plantdoc
 """
 from __future__ import annotations
 
@@ -91,7 +95,12 @@ def parse_args():
     p.add_argument("--checkpoint", default=None, help="--mode test only. Defaults to this run's own best.pt.")
     p.add_argument("--eval_dataset", default=None, choices=["plantvillage", "plantdoc"],
                    help="--mode test only. Defaults to this regime's own dataset (no domain switch).")
-    p.add_argument("--eval_split", default="test", choices=["train", "val", "test"], help="--mode test only.")
+    p.add_argument("--eval_split", default=None, choices=["train", "val", "test", "all"],
+                   help="--mode test only. Default: 'all' (train+val+test combined) for regime 1's "
+                        "cross-dataset PlantDoc eval specifically -- regime 1 never trained or "
+                        "validated on any PlantDoc split, so none of it needs holding out, and "
+                        "using all of it maximizes N for PlantDoc's thin per-class support. "
+                        "'test' otherwise. Pass this explicitly to override either default.")
 
     return p.parse_args()
 
@@ -397,6 +406,21 @@ def main():
             raise FileNotFoundError(f"No checkpoint at {ckpt_path}. Train this (backbone, regime, seed) first, or pass --checkpoint explicitly.")
 
         eval_dataset = args.eval_dataset or cfg["dataset"]
+        is_cross_dataset = eval_dataset != cfg["dataset"]
+        if args.eval_split is not None:
+            eval_split = args.eval_split
+        elif cfg["regime"] == 1 and eval_dataset == "plantdoc":
+            # Regime 1 trained/validated on PlantVillage only -- no PlantDoc
+            # split was ever touched, so none needs holding out here. Using
+            # the complete dataset (not just its "test" slice) maximizes N
+            # for this eval, which matters given PlantDoc's thin per-class
+            # support (see assets/docs/05_modelling_decisions.md). Regime
+            # 2/3 do NOT get this default: they trained/validated directly
+            # on PlantDoc's train/val splits, so a standalone eval of THEM
+            # still defaults to "test" to avoid leaking training data in.
+            eval_split = "all"
+        else:
+            eval_split = "test"
         eval_manifest_path = manifests_dir / f"{eval_dataset}_manifest.csv"
         if not eval_manifest_path.exists():
             raise FileNotFoundError(f"{eval_manifest_path} not found -- run scripts/run_data_pipeline.py first.")
@@ -409,17 +433,17 @@ def main():
         mean, std = get_norm_stats(cfg["norm_stats"], eval_dataset, manifests_dir)
         eval_tf = build_transforms("eval", image_size=cfg["image_size"], mean=mean, std=std)
         eval_df = pd.read_csv(eval_manifest_path)
-        eval_ds = PlantLeafDataset(eval_df, split=args.eval_split, label_mode=cfg["label_mode"], taxonomy=taxonomy, transform=eval_tf)
+        eval_ds = PlantLeafDataset(eval_df, split=eval_split, label_mode=cfg["label_mode"], taxonomy=taxonomy, transform=eval_tf)
         eval_loader = DataLoader(eval_ds, batch_size=cfg["batch_size"], shuffle=False, num_workers=cfg["num_workers"])
 
         model = MultiHeadClassifier(cfg["backbone"], num_crops=taxonomy.num_crops(), num_diseases=taxonomy.num_diseases(),
                                      pretrained=False, dropout=cfg["dropout"]).to(device)
         load_checkpoint(ckpt_path, model)
 
-        logger.log("standalone_eval_start", checkpoint=str(ckpt_path), eval_dataset=eval_dataset, eval_split=args.eval_split,
-                   is_cross_dataset=(eval_dataset != cfg["dataset"]))
+        logger.log("standalone_eval_start", checkpoint=str(ckpt_path), eval_dataset=eval_dataset, eval_split=eval_split,
+                   is_cross_dataset=is_cross_dataset)
         test_report = run_test(model, eval_loader, taxonomy, cfg, device)
-        out_name = f"eval_{eval_dataset}_{args.eval_split}.json"
+        out_name = f"eval_{eval_dataset}_{eval_split}.json"
         write_json(ckpt_path.parent.parent / out_name, test_report)
         logger.log("standalone_eval_complete",
                    crop_top1=test_report["crop"]["top1_accuracy"], crop_top3=test_report["crop"]["top3_accuracy"],

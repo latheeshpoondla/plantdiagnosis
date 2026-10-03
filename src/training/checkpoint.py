@@ -33,14 +33,29 @@ def load_checkpoint(path: str | Path, model, optimizer=None, map_location: str =
 
 
 def load_backbone_weights_only(path: str | Path, model, map_location: str = "cpu") -> None:
-    """For regime 3: load only the matching backbone weights from a
-    regime-1 checkpoint, leaving crop_head/disease_head at their freshly
-    initialized state. The backbone's learned features transfer; the heads
-    are the same shape/label-space either way (crop/disease spaces are
-    identical across regimes for the multitask formulation -- see
-    assets/docs/05_modelling_decisions.md), so in practice this loads the
-    whole model. Implemented as a backbone-only load anyway so it stays
-    correct if a future formulation changes head shapes between regimes.
+    """For regime 3: load ONLY the `backbone.*` weights from a regime-1
+    checkpoint -- `crop_head`/`disease_head` are filtered out before
+    `load_state_dict` ever sees them, so the heads always start from this
+    model's own fresh random init, never from regime-1's learned head
+    weights, regardless of whether the shapes happen to match. Deliberate,
+    for two reasons (see assets/docs/05_modelling_decisions.md):
+
+    1. Transfer-learning rationale: the backbone's learned visual features
+       (edges, textures, disease patterns) are the generically reusable
+       part; the heads are the final decision boundary fit to PlantVillage's
+       own feature distribution. Given the measured PlantVillage/PlantDoc
+       domain gap, carrying that boundary over could bias the fine-tune
+       rather than help it -- a fresh head learns its boundary purely from
+       PlantDoc's own labels from epoch 0, on top of the transferred
+       backbone features.
+    2. Forward-compatibility: multitask's crop/disease label spaces happen
+       to be identical across regimes, so a (hypothetical) whole-model load
+       would also work *today* -- but the joint-label formulation planned
+       for later does NOT share head shapes between regimes (PlantVillage's
+       38 joint classes vs PlantDoc's 27 matched), so a generic whole-model
+       load would crash or silently misload there. Filtering to
+       `backbone.*` unconditionally means this function stays correct
+       without changes once that formulation exists.
     """
     import torch
 
